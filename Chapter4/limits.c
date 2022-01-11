@@ -36,10 +36,10 @@ int main(void)
     printf("DBL_MANT_DIG = %d,DBL_DIG = %d\n", DBL_MANT_DIG, DBL_DIG);                   //位数和有效位数宽度
     printf("DBL_MIN_10_EXP = %d,DBL_MAX_10_EXP = %d\n", DBL_MIN_10_EXP, DBL_MAX_10_EXP); //以10为底的指数取值范围
     printf("DBL_EPSILON = %e\n", DBL_EPSILON);
-    printf("LDBL_MAX = %Lf,LDBL_MIN = %Lf\n", LDBL_MAX, LDBL_MIN);                           // long double 只能是Lf
+    printf("LDBL_MAX = %Le,LDBL_MIN = %Le\n", LDBL_MAX, LDBL_MIN);                           // long double 只能是Lf或Le
     printf("LDBL_MANT_DIG = %d,LDBL_DIG = %d\n", LDBL_MANT_DIG, LDBL_DIG);                   //位数和有效位数宽度
     printf("LDBL_MIN_10_EXP = %d,LDBL_MAX_10_EXP = %d\n", LDBL_MIN_10_EXP, LDBL_MAX_10_EXP); //以10为底的指数取值范围
-    printf("LDBL_EPSILON = %Lf\n", LDBL_EPSILON);
+    printf("LDBL_EPSILON = %Le\n", LDBL_EPSILON);
 
     return 0;
 }
