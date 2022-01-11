@@ -21,8 +21,8 @@ int main(void)
 
     //获取用户输入
     scanf("%f", &weight);
-    //假设白金价格是每盎司$1700，14.5833用于把英镑常衡盎司转换为金衡盎司
-    value = 1700.0 * weight * 14.5833;
+    //2022-01-11白金价格是每盎司$947.53，14.5833用于把英镑常衡盎司转换为金衡盎司
+    value = 947.53 * weight * 14.5833;
     printf("Your weight in platinum is worth $%.2f.\n", value);
     printf("You are easily worth that! If platinum prices drop,\n");
     printf("eat more to maintain your value.\n");
