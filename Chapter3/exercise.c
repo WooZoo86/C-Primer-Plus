@@ -150,7 +150,7 @@ int main(void)
     float cup_num;
     printf("Enter cup numbers: ");
     scanf("%f", &cup_num);
-    printf("%f cups = %f pindo = %f angsi = %f datangshao = %f chashao");
+    printf("%f cups = %f pindo = %f ounce = %f datangshao = %f chashao");
 
     return 0;
 }
