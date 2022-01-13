@@ -180,13 +180,26 @@ void exercise_1(void);
 void exercise_2(void);
 void exercise_3(void);
 void exercise_4(void);
+void exercise_5(void);
+void exercise_6(void);
+void exercise_7(void);
+double cubed(double value);
+void exercise_8(void);
+void exercise_9(void);
+void Temperatures(double Fahrenheit);
 
 int main(void)
 {
     // exercise_1();
     // exercise_2();
     // exercise_3();
-    exercise_4();
+    // exercise_4();
+    // exercise_5();
+    // exercise_6();
+    // exercise_7();
+    // exercise_8();
+    exercise_9();
+
     return 0;
 }
 
@@ -278,4 +291,114 @@ void exercise_4(void)
         scanf("%f", &height);
     }
     printf("bye\n");
+}
+
+void exercise_5(void)
+{
+    // 5．修改程序addemup.c（程序清单5.13），你可以认为addemup.c是计算20天里赚多少钱的程序（假设第1天赚$1、第2天赚$2、第3天赚$3，以此类推）。
+    //修改程序，使其可以与用户交互，根据用户输入的数进行计算（即，用读入的一个变量来代替20）。
+    int days, total, count;
+
+    printf("Enter caculate days: ");
+    scanf("%d", &days);
+    total = count = 0;
+
+    while (count++ < days)
+    {
+        total = total + count;
+    }
+    printf("total money are $%d\n", total);
+}
+
+void exercise_6(void)
+{
+    // 6．修改编程练习5的程序，使其能计算整数的平方和（可以认为第1天赚$1、第2天赚$4、第3天赚$9，以此类推，这看起来很不错）。
+    // C没有平方函数，但是可以用n * n来表示n的平方。
+    int days, total, count;
+
+    printf("Enter caculate days: ");
+    scanf("%d", &days);
+    total = count = 0;
+
+    while (count++ < days)
+    {
+        total = total + count * count;
+    }
+    printf("total money are $%d\n", total);
+}
+
+double cubed(double value)
+{
+    return value * value * value;
+}
+
+void exercise_7(void)
+{
+    // 7．编写一个程序，提示用户输入一个double类型的数，并打印该数的立方值。自己设计一个函数计算并打印立方值。
+    // main()函数要把用户输入的值传递给该函数。
+    double value;
+
+    printf("Enter a double floating-point value: ");
+    scanf("%lf", &value);
+    printf("%lf\n", cubed(value));
+}
+
+void exercise_8(void)
+{
+    //编写一个程序，显示求模运算的结果。把用户输入的第1个整数作为求模运算符的第2个运算对象，该数在运算过程中保持不变。
+    //用户后面输入的数是第1个运算对象。当用户输入一个非正值时，程序结束。其输出示例如下：
+    // This program computes moduli.
+    // Enter an integer to serve as the second operand: 256
+    // Now enter the first operand: 438
+    // 438 % 256 is 182
+    // Enter next number for first operand(<=0 to quit): 1234567
+    // 1234567 % 256 is 135
+    // Enter next number for first operand (<=0 to quit): 0
+    // Done
+    int op1, op2;
+
+    printf("This program computes moduli.\n");
+    printf("Enter an integer to serve as the second operand: ");
+    scanf("%d", &op2);
+    printf("Now enter the first operand: ");
+    scanf("%d", &op1);
+    while (op1 > 0)
+    {
+        printf("%d %% %d is %d\n", op1, op2, op1 % op2);
+        printf("Enter next number for first operand (<=0 to quit): ");
+        scanf("%d", &op1);
+    }
+    printf("Done\n");
+}
+
+void Temperatures(double Fahrenheit)
+{
+    const double CS_FRACTION = 5.0 / 9.0;
+    const double CS_CONST = 32.0;
+    const double KN_CONST = 273.16;
+    double celsius, kelvin;
+
+    celsius = CS_FRACTION * (Fahrenheit - CS_CONST);
+    kelvin = celsius + KN_CONST;
+    printf("Fahrenheit degree %.2lf is celsius degree %.2lf, or kelvin degree %.2lf\n", Fahrenheit, celsius, kelvin);
+}
+
+void exercise_9(void)
+{
+    // 9．编写一个程序，要求用户输入一个华氏温度。程序应读取double类型的值作为温度值，并把该值作为参数传递给一个用户自定义的函数Temperatures()。
+    // 该函数计算摄氏温度和开氏温度，并以小数点后面两位数字的精度显示3种温度。要使用不同的温标来表示这3个温度值。下面是华氏温度转摄氏温度的公式：
+    // 摄氏温度 = 5.0 / 9.0 * (华氏温度 - 32.0)
+    // 开氏温标常用于科学研究，0表示绝对零，代表最低的温度。下面是摄氏温度转开氏温度的公式：
+    // 开氏温度 = 摄氏温度 + 273.16
+    // Temperatures()函数中用const创建温度转换中使用的变量。在main()函数中使用一个循环让用户重复输入温度，当用户输入q或其他非数字时，循环结束。
+    // scanf()函数返回读取数据的数量，所以如果读取数字则返回1，如果读取q则不返回1。可以使用==运算符将scanf()的返回值和1作比较，测试两值是否相等。
+    double Fahrenheit;
+
+    printf("Enter a temperature(Fahrenheit): ");
+    while (scanf("%lf", &Fahrenheit) == 1)
+    {
+        Temperatures(Fahrenheit);
+        printf("Enter a temperature(Fahrenheit): ");
+    }
+    printf("Done\n");
 }
