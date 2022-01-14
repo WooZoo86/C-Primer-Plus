@@ -1,0 +1,2 @@
+
+        if ('i' == ch && ordered)
