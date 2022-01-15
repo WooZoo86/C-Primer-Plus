@@ -58,6 +58,7 @@ while((ch=getchar())!=‘\n’)
 #include <stdio.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <math.h>
 
 void exercise_1(void);
 void exercise_2(void);
@@ -368,13 +369,14 @@ void exercise_8(void)
             result = ops1 * ops2;
             break;
         case 'd':
-            while ((int)ops2 == 0)
+            while (fabsf(ops2 - 0.0f) < 0.000001) //超过float精度，认为是0.0
             {
                 printf("Enter a number other than 0 : ");
                 scanf("%f", &ops2);
             }
             ops = '/';
             result = ops1 / ops2;
+
             break;
         default:
             printf("invalid menu\n");
