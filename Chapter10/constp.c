@@ -20,7 +20,7 @@ int main(void)
     p2 = &p1;
     *p2 = &n;
     *p1 = 10;
-    printf("n = %d\n", n); //部分系统允许修改n的值
+    printf("n = %d\n", n); //部分系统允许修改n的值，其结果是未定义的
 
     return 0;
 }
