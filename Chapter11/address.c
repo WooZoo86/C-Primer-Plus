@@ -18,7 +18,7 @@ int main(void)
     char msg[] = MSG;
     const char *ptr = MSG;
 
-    printf("address of \"I am special\": %p\n", "I am special"); //相同的字符串编译器只保存一份
+    printf("address of \"I am special\": %p\n", "I am special"); //相同的字符串编译器只保存一份，有的编译器可能保存多分
     printf("address msg: %p\n", msg);
     printf("address ptr: %p\n", ptr);
     printf("address MSG: %p\n", MSG);
