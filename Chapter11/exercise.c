@@ -275,21 +275,35 @@ int main(void)
 /* 编程练习 */
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 void exercise_1(void);
+void exercise_2(void);
+void exercise_3(void);
+void exercise_4(void);
+void exercise_5(void);
+void exercise_6(void);
+void exercise_7(void);
+void exercise_8(void);
 
 int main(void)
 {
-    exercise_1();
+    // exercise_1();
+    // exercise_2();
+    // exercise_3();
+    // exercise_4();
+    // exercise_5();
+    // exercise_6();
+    // exercise_7();
+    exercise_8();
+
     return 0;
 }
 
 void func_1(char *str, int n)
 {
     while (n--)
-    {
         *str++ = getchar();
-    }
 }
 
 void exercise_1(void)
@@ -297,5 +311,186 @@ void exercise_1(void)
     // 1．设计并测试一个函数，从输入中获取n个字符（包括空白、制表符、换行符），把结果存储在一个数组里，它的地址被传递作为一个参数。
     const int n = 10;
     char str[n + 1] = {'\0'};
-    func_1("str", n);
+
+    printf("Enter %d characters:\n", n);
+    func_1(str, n);
+    printf("str=%s,len=%zd\n", str, strlen(str));
+}
+
+void func_2(char *str, int n)
+{
+    if (isspace(getchar()))
+        return;
+    while (n--)
+        *str++ = getchar();
+}
+
+void exercise_2(void)
+{
+    // 2．修改并编程练习1的函数，在n个字符后停止，或在读到第1个空白、制表符或换行符时停止，哪个先遇到哪个停止。不能只使用scanf()。
+    const int n = 10;
+    char str[n + 1] = {'\0'};
+
+    printf("Enter %d characters or spaces to exit:\n", n);
+    func_2(str, n);
+    printf("str=%s,len=%zd\n", str, strlen(str));
+}
+
+void func_3(char *str, int n)
+{
+    int ch;
+    while (isspace(ch = getchar()))
+        ;
+    *str++ = ch;
+    n--;
+    while (n-- && isalpha(ch = getchar()))
+        *str++ = ch;
+    while (ch != '\n')
+        ch = getchar();
+}
+
+void exercise_3(void)
+{
+    // 3．设计并测试一个函数，从一行输入中把一个单词读入一个数组中，并丢弃输入行中的其余字符。该函数应该跳过第1个非空白字符前面的所有空白。将一个单词定义为没有空白、制表符或换行符的字符序列。
+    const int n = 10;
+    char str[n + 1] = {'\0'};
+
+    printf("Enter %d characters or a word:\n", n);
+    func_3(str, n);
+    printf("str=%s,len=%zd\n", str, strlen(str));
+}
+
+void exercise_4(void)
+{
+    // 4．设计并测试一个函数，它类似编程练习3的描述，只不过它接受第2个参数指明可读取的最大字符数。
+    const int n = 10;
+    char str[n + 1] = {'\0'};
+
+    printf("Enter %d characters or a word:\n", n);
+    func_3(str, n);
+    printf("str=%s,len=%zd\n", str, strlen(str));
+}
+
+char *func_5(char *str, int target)
+{
+    int ch;
+    while ((ch = *str) && ch != target)
+        str++;
+    return ch ? str : NULL;
+}
+
+void exercise_5(void)
+{
+    // 5．设计并测试一个函数，搜索第1个函数形参指定的字符串，在其中查找第2个函数形参指定的字符首次出现的位置。如果成功，该函数返指向该字符的指针，
+    //如果在字符串中未找到指定字符，则返回空指针（该函数的功能与strchr()函数相同）。在一个完整的程序中测试该函数，使用一个循环给函数提供输入值。
+    char str[255] = {'\0'};
+    char *pos = NULL;
+    char ch;
+
+    puts("Enter a string and a character to search for first time:");
+    while (scanf("%s %c", str, &ch) == 2)
+    {
+        pos = func_5(str, ch);
+        if (pos)
+            printf("find first character %c at %s\n", ch, pos);
+        else
+            printf("not found character %c in %s\n", ch, str);
+
+        puts("Again,Enter a string and a character to search for first time:");
+    }
+    puts("done...");
+}
+
+int is_within(char *str, int target)
+{
+    int ch;
+    while ((ch = *str) && ch != target)
+        str++;
+    return ch ? str : 0;
+}
+
+void exercise_6(void)
+{
+    // 6．编写一个名为is_within()的函数，接受一个字符和一个指向字符串的指针作为两个函数形参。如果指定字符在字符串中，该函数返回一个非零值（即为真）。否则，返回0（即为假）。在一个完整的程序中测试该函数，使用一个循环给函数提供输入值。
+    char str[255] = {'\0'};
+    char *pos = NULL;
+    char ch;
+
+    puts("Enter a string and a character to search for first time:");
+    while (scanf("%s %c", str, &ch) == 2)
+    {
+        pos = is_within(str, ch);
+        if (pos)
+            printf("find first character %c at %s\n", ch, pos);
+        else
+            printf("not found character %c in %s\n", ch, str);
+
+        puts("Again,Enter a string and a character to search for first time:");
+    }
+    puts("done...");
+}
+
+char *mystrncpy(char *restrict dest, const char *restrict src, size_t count)
+{
+    char *start = dest;
+    while (count-- && (*dest++ = *src++))
+        ;
+    count ? *dest = '\0' : NULL;
+    return start;
+}
+
+void exercise_7(void)
+{
+    // 7．strncpy(s1, s2, n)函数把s2中的n个字符拷贝至s1中，截断s2，或者有必要的话在末尾添加空字符。如果s2的长度是n或多于n，目标字符串不能以空字符结尾。
+    // 该函数返回s1。自己编写一个这样的函数，名为mystrncpy()。在一个完整的程序中测试该函数，使用一个循环给函数提供输入值。
+    const int n = 10;
+    char str[n + 1] = {'\0'};
+    char src[255] = {'\0'};
+
+    puts("Enter a string to be copied:");
+    while (scanf("%s", src) == 1)
+    {
+        printf("copied string is %s\n", mystrncpy(str, src, n));
+        puts("Again,Enter a string to be copied:");
+    }
+    puts("done...");
+}
+
+char *string_in(const char *src, const char *target)
+{
+    char *pos = NULL;
+    int ch;
+    while ((ch = *src) && (ch != *target))
+        src++;
+    if (ch)
+    {
+        pos = src;
+        while ((ch = *target++) && (ch == *src++))
+            ;
+        return ch ? NULL : pos;
+    }
+
+    return NULL;
+}
+
+void exercise_8(void)
+{
+    // 8．编写一个名为string_in()的函数，接受两个指向字符串的指针作为参数。如果第2个字符串包含在第1个字符串中，该函数将返回第1个字符串开始的地址。
+    // 例如，string_in("hats", "at")将返回hats中a的地址。否则，该函数返回空指针。在一个完整的程序中测试该函数，使用一个循环给函数提供输入值。
+    char src[255] = {'\0'};
+    char target[255] = {'\0'};
+    char *pos = NULL;
+
+    puts("Enter a string and a string to search for:");
+    while (scanf("%s %s", src, target) == 2)
+    {
+        pos = string_in(src, target);
+        if (pos)
+            printf("find string %s at %s\n", target, pos);
+        else
+            printf("not found string %s in %s\n", target, src);
+
+        puts("Again,Enter a string and a string to search for:");
+    }
+    puts("done...");
 }
