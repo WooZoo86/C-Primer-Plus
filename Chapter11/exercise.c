@@ -285,6 +285,9 @@ void exercise_5(void);
 void exercise_6(void);
 void exercise_7(void);
 void exercise_8(void);
+void exercise_9(void);
+void exercise_10(void);
+void exercise_11(void);
 
 int main(void)
 {
@@ -295,7 +298,10 @@ int main(void)
     // exercise_5();
     // exercise_6();
     // exercise_7();
-    exercise_8();
+    // exercise_8();
+    // exercise_9();
+    // exercise_10();
+    exercise_11();
 
     return 0;
 }
@@ -493,4 +499,214 @@ void exercise_8(void)
         puts("Again,Enter a string and a string to search for:");
     }
     puts("done...");
+}
+
+char *func_9(char *src)
+{
+    char *start;
+    char *end;
+    int ch;
+
+    start = src;
+    end = src + strlen(src) - 1;
+    while (start < end)
+    {
+        ch = *end;
+        *end = *start;
+        *start = ch;
+        start++;
+        end--;
+    }
+
+    return src;
+}
+
+void exercise_9(void)
+{
+    // 9．编写一个函数，把字符串中的内容用其反序字符串代替。在一个完整的程序中测试该函数，使用一个循环给函数提供输入值。
+    char src[255] = {'\0'};
+
+    puts("Enter a string to be reversed:");
+    while (scanf("%s", src) == 1)
+    {
+        printf("reversed to %s\n", func_9(src));
+        puts("Again,Enter a string to be reversed:");
+    }
+}
+
+char *func_10(char *src)
+{
+    char *end;
+    char *pos;
+    int ch;
+
+    end = pos = src;
+    while ((ch = *pos++))
+        ch != '\x20' ? (*end++ = ch) : NULL;
+    *end = '\0';
+
+    return src;
+}
+
+void exercise_10(void)
+{
+    // 10．编写一个函数接受一个字符串作为参数，并删除字符串中的空格。在一个程序中测试该函数，使用循环读取输入行，直到用户输入一行空行。该程序应该应用该函数读取每个输入的字符串，并显示处理后的结果。
+    char src[255] = {'\0'};
+
+    puts("Enter a string contain spaces to be trimed or exit with all spaces:");
+    while (fgets(src, 255, stdin) && src[0] != '\xA' && src[0] != '\xD' && src[0] != '\x20')
+    {
+        printf("trim to %s\n", func_10(src));
+        puts("Again,Enter a string contain spaces to be trimed or exit with all spaces:");
+    }
+}
+
+int GetStrs(char **strs, int size)
+{
+    size_t i;
+
+    printf("Enter %d strings or EOF to exit\n", size);
+    for (i = 0; i < size && scanf("%s", strs[i]) == 1; i++)
+        ;
+
+    return i;
+}
+
+int GetMenu()
+{
+    int menu = 0;
+
+    puts("Choose a menu below:");
+    puts("0.exit");
+    puts("1.print");
+    puts("2.print by ascii order");
+    puts("3.print by length order");
+    puts("4.print as the same length of first string");
+    scanf("%d", &menu);
+    return menu;
+}
+
+void PrintStrs(const char *strs[10], int size)
+{
+    for (size_t i = 0; i < size; i++)
+        puts(strs[i]);
+}
+
+typedef int (*comfunc)(const char *, const char *);
+int ByAsciiOrder(const char *left, const char *right)
+{
+    return *left > *right;
+}
+
+int ByLengthOrder(const char *left, const char *right)
+{
+    return strlen(left) > strlen(right);
+}
+
+// 0 by ascii
+// 1 by length
+void PrintStrsByOrder(char *strs[10], int size, int order)
+{
+    char *sorted[10];
+    char *temp;
+    comfunc func;
+
+    switch (order)
+    {
+    case 0:
+        func = ByAsciiOrder;
+        break;
+    case 1:
+        func = ByLengthOrder;
+        break;
+    default:
+        puts("Invalid order...");
+        return;
+    }
+
+    for (size_t i = 0; i < size; i++)
+        sorted[i] = strs[i];
+
+    for (size_t i = 0; i < size - 1; i++)
+    {
+        for (size_t j = i + 1; j < size; j++)
+        {
+            if (func(sorted[i], sorted[j]))
+            {
+                temp = sorted[j];
+                sorted[j] = sorted[i];
+                sorted[i] = temp;
+            }
+        }
+    }
+
+    PrintStrs(sorted, size);
+}
+void PrintStrsByAsiiOrder(const char *strs[10], int size)
+{
+    PrintStrsByOrder(strs, size, 0);
+}
+
+void PrintStrsByLengthOrder(const char *strs[10], int size)
+{
+    PrintStrsByOrder(strs, size, 1);
+}
+
+void PrintStrsByFirstStrLen(const char *strs[10], int size)
+{
+    size_t len = strlen(strs[0]);
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < len && strs[i][j]; j++)
+        {
+            putchar(strs[i][j]);
+        }
+        putchar('\n');
+    }
+}
+
+void OneMenu(int menu, const char *strs[10], int size)
+{
+    switch (menu)
+    {
+    case 0:
+        puts("exit...");
+        break;
+    case 1:
+        PrintStrs(strs, size);
+        break;
+    case 2:
+        PrintStrsByAsiiOrder(strs, size);
+        break;
+    case 3:
+        PrintStrsByLengthOrder(strs, size);
+        break;
+    case 4:
+        PrintStrsByFirstStrLen(strs, size);
+        break;
+    default:
+        puts("unknown menu...");
+        break;
+    }
+}
+
+void exercise_11(void)
+{
+    // 11．编写一个程序，读入10个字符串或者读到EOF时停止。该程序为用户提供一个有5个选项的菜单：打印源字符串列表、以ASCII中的顺序打印字符串、
+    // 按长度递增顺序打印字符串、按字符串中第1个单词的长度打印字符串、退出。菜单可以循环显示，除非用户选择退出选项。当然，该程序要能真正完成菜单中各选项的功能。
+    char strs[10][255] = {'\0'};
+    char *temp[10];
+    int menu;
+    for (size_t i = 0; i < 10; i++)
+    {
+        temp[i] = &strs[i][0];
+    }
+
+    while (GetStrs(temp, 10) == 10)
+    {
+        while (menu = GetMenu())
+            OneMenu(menu, temp, 10);
+        if (!menu)
+            break;
+    }
 }
