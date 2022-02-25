@@ -276,6 +276,8 @@ int main(void)
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <time.h>
 
 void exercise_1(void);
 void exercise_2(void);
@@ -288,9 +290,16 @@ void exercise_8(void);
 void exercise_9(void);
 void exercise_10(void);
 void exercise_11(void);
+void exercise_12(void);
+void exercise_13(void);
+void exercise_14(void);
+void exercise_15(void);
+void exercise_16(void);
 
 int main(void)
 {
+    srand((unsigned)time(NULL));
+
     // exercise_1();
     // exercise_2();
     // exercise_3();
@@ -301,7 +310,12 @@ int main(void)
     // exercise_8();
     // exercise_9();
     // exercise_10();
-    exercise_11();
+    // exercise_11();
+    // exercise_12();
+    // exercise_13();
+    // exercise_14();
+    // exercise_15();
+    exercise_16();
 
     return 0;
 }
@@ -709,4 +723,173 @@ void exercise_11(void)
         if (!menu)
             break;
     }
+}
+
+void exercise_12(void)
+{
+    // 12．编写一个程序，读取输入，直至读到EOF，报告读入的单词数、大写字母数、小写字母数、标点符号数和数字字符数。使用ctype.h头文件中的函数。
+    const int size = 1024;
+    char strs[size] = {'\0'};
+    int inWord = 0;
+    int count = 0;
+    int words = 0;
+    int uppers = 0;
+    int lowers = 0;
+    int puncts = 0;
+    int digits = 0;
+    int ch;
+
+    puts("Enter strings to statics: ");
+    while ((ch = getchar()) != EOF && count < size)
+        strs[count++] = ch;
+
+    for (size_t i = 0; i < count; i++)
+    {
+        ch = strs[i];
+        if (isalpha(ch))
+        {
+            if (!inWord)
+            {
+                if (i > 0)
+                {
+                    if (isspace(strs[i - 1]))
+                        inWord = 1;
+                }
+                else
+                    inWord = 1;
+            }
+
+            if (isupper(ch))
+                uppers++;
+            else
+                lowers++;
+        }
+        else
+        {
+            if (inWord)
+            {
+                if (isspace(ch))
+                    words++;
+
+                inWord = 0;
+            }
+
+            if (ispunct(ch))
+                puncts++;
+            if (isnumber(ch))
+                digits++;
+        }
+    }
+
+    printf("words: %d digits:%d uppers:%d lowers:%d puncts:%d\n", words, digits, uppers, lowers, puncts);
+}
+
+void exercise_13(void)
+{
+    // 13．编写一个程序，反序显示命令行参数的单词。例如，命令行参数是see you later，该程序应打印later you see。
+    const int argc = 3;
+    const char argv[argc][255] = {"see", "you", "later"};
+    char *pos = NULL;
+
+    puts("argv in reverse order:");
+    for (int i = 0; i < argc; i++)
+        printf("%s ", argv[i]);
+
+    printf("\n");
+    for (int i = argc - 1; i >= 0; i--)
+        printf("%s ", argv[i]);
+}
+
+void exercise_14(void)
+{
+    // 14．编写一个通过命令行运行的程序计算幂。第1个命令行参数是double类型的数，作为幂的底数，第2个参数是整数，作为幂的指数。
+    const int argc = 2;
+    const char argv[argc][255] = {"6", "3"};
+    double number;
+    double total;
+    int pow;
+
+    number = strtod(argv[0], &number);
+    pow = atoi(argv[1]);
+    total = 1.0;
+    for (int i = 0; i < pow; i++)
+    {
+        total *= number;
+    }
+
+    printf("number=%lf,pow=%d,total=%lf\n", number, pow, total);
+}
+
+int my_atoi(const char *str)
+{
+    const char *pos = str;
+    int result = 0;
+
+    while (isnumber(*pos))
+        pos++;
+    if (pos < (str + strlen(str)))
+        return 0;
+    sscanf(str, "%d", &result);
+
+    return result;
+}
+
+void exercise_15(void)
+{
+    // 15．使用字符分类函数实现atoi()函数。如果输入的字符串不是纯数字，该函数返回0。
+    const char *str = "123";
+    printf("number str:%s\n", str);
+    printf("number:%d\n", my_atoi(str));
+}
+
+void upper_str(const char *str)
+{
+    int ch;
+
+    while (ch = *str++)
+        putchar(toupper(ch));
+}
+
+void lower_str(const char *str)
+{
+    int ch;
+
+    while (ch = *str++)
+        putchar(tolower(ch));
+}
+
+void print_str(const char *str)
+{
+    printf("%s", str);
+}
+
+typedef void (*operate_str)(const char *str);
+void exercise_16(void)
+{
+    // 16．编写一个程序读取输入，直至读到文件结尾，然后把字符串打印出来。该程序识别和实现下面的命令行参数：
+    //-p    按原样打印
+    //-u    把输入全部转换成大写
+    //-l    把输入全部转换成小写
+    const char *cmds[3] = {"-p", "-u", "-l"};
+    char str[1024] = {'\0'};
+    operate_str operation;
+    const char *argv;
+    int cmd;
+
+    puts("Enter string to operate or EOF to exit:");
+    while (fgets(str, 1024, stdin))
+    {
+        cmd = rand() % 3;
+        printf("the cmd parameter is: %s\n", cmds[cmd]);
+        argv = cmds[cmd];
+        if (!strcmp(argv, cmds[0]))
+            operation = print_str;
+        else if (!strcmp(argv, cmds[1]))
+            operation = upper_str;
+        else
+            operation = lower_str;
+
+        operation(str);
+    }
+    puts("done...");
 }
